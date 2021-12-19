@@ -33,7 +33,7 @@
                             <div class='song-info'>
                                 <p>{{item.name}}</p>
                                 <p>
-                                    <span v-for='(item,index) in item.ar'>
+                                    <span v-for='(item,index) in item.ar' :key="index">
                                         {{item.name+" "}}
                                     </span>
                                     <span>{{" - "+ item.al.name}}</span>
@@ -71,132 +71,134 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
-    import headnav from '@/components/HeadNav.vue'
-    // import Comments from '@/components/sub/Comments.vue'
-    export default {
-        name: 'SongListDetail',
-        components: { headnav },
-        data() {
-            return {
-                songList: [],
-                songListInfo: {
-                    creator: {
-                        avatarUrl: ''
-                    }
+import axios from "axios";
+import headnav from "@/components/HeadNav.vue";
+// import Comments from '@/components/sub/Comments.vue'
+export default {
+    name: "SongListDetail",
+    components: { headnav },
+    data() {
+        return {
+            songList: [],
+            songListInfo: {
+                creator: {
+                    avatarUrl: "",
                 },
-                commentList: [],
-                songListId: this.$route.query.songListId
-            }
-        },
-        methods: {
-            getSongListInfo() {
-                axios.get('/playlist/detail?id=' + this.$route.query.songListId).then(res => {
-                    console.log(res)
-                    this.songList = res.data.playlist.tracks
-                    this.songListInfo = res.data.playlist
-                    this.$store.commit("INIT_TOPLISTIDS", res.data.playlist.tracks)
-                })
-
-
             },
-            handleToDetail(id) {
-                this.$router.push({
-                    name: 'detail',
-                    query: { id: id }
-                })
-            },
-            handleToComments() {
-                axios.get('/comment/playlist?id=' + this.songListId).then(res => {
-                    if (res.data.code === 200) {
-                        this.commentList = res.data.comments
-                    }
-                    console.log(res)
-                })
-            }
+            commentList: [],
+            songListId: this.$route.query.songListId,
+        };
+    },
+    methods: {
+        getSongListInfo() {
+            axios
+                .get("/playlist/detail?id=" + this.$route.query.songListId)
+                .then((res) => {
+                    console.log(res);
+                    this.songList = res.data.playlist.tracks;
+                    this.songListInfo = res.data.playlist;
+                    this.$store.commit(
+                        "INIT_TOPLISTIDS",
+                        res.data.playlist.tracks
+                    );
+                });
         },
-        created() {
-            this.getSongListInfo()
-            this.handleToComments()
-        }
-    }
+        handleToDetail(id) {
+            this.$router.push({
+                name: "detail",
+                query: { id: id },
+            });
+        },
+        handleToComments() {
+            axios.get("/comment/playlist?id=" + this.songListId).then((res) => {
+                if (res.data.code === 200) {
+                    this.commentList = res.data.comments;
+                }
+                console.log(res);
+            });
+        },
+    },
+    created() {
+        this.getSongListInfo();
+        this.handleToComments();
+    },
+};
 </script>
 <style>
-    .cover {
-        width: 100%;
-        z-index: -1;
-        position: absolute;
-        height: 320px;
-        overflow: hidden;
-    }
+.cover {
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 320px;
+    overflow: hidden;
+}
 
-    .cover-img {
-        height: 320px;
-        width: 100%;
-        background-size: 100% 400px;
-        background-repeat: no-repeat;
-        background-position: center center;
-        z-index: -1;
-        filter: blur(30px);
-        transform: scale(1.2);
-        overflow: hidden;
-    }
+.cover-img {
+    height: 320px;
+    width: 100%;
+    background-size: 100% 400px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: -1;
+    filter: blur(30px);
+    transform: scale(1.2);
+    overflow: hidden;
+}
 
-    .song-details {
-        padding: 40px;
-        color: #fff;
-        display: flex;
-        justify-content: space-around;
-    }
+.song-details {
+    padding: 40px;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+}
 
+.song-detail-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-right: 30px;
+}
 
-    .song-detail-img {
-        width: 200px;
-        height: 200px;
-        border-radius: 20px;
-        overflow: hidden;
-        margin-right: 30px;
-    }
+.song-detail-img img {
+    width: 100%;
+    height: 100%;
+}
 
-    .song-detail-img img {
-        width: 100%;
-        height: 100%;
-    }
+.detail-list-title {
+    width: 400px;
+}
 
-    .detail-list-title {
-        width: 400px;
-    }
+.song-detail-info p {
+    color: #ccc;
+}
 
-    .song-detail-info p {
-        color: #ccc;
-    }
+.song-detail-info p img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
 
-    .song-detail-info p img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        vertical-align: middle;
-    }
+.edits {
+    font-size: 24px;
+}
 
-    .edits {
-        font-size: 24px;
-    }
+.song-detail-info p i {
+    vertical-align: middle;
+}
 
-    .song-detail-info p i {
-        vertical-align: middle;
-    }
+.song-list-title {
+    background-color: #eee;
+    font-size: 24px;
+    position: relative;
+    top: -12px;
+    padding-left: 30px;
+}
 
-    .song-list-title {
-        background-color: #eee;
-        font-size: 24px;
-        position: relative;
-        top: -12px;
-        padding-left: 30px;
-    }
-
-    .comment-title {
-        background-color: #eee;
-        font-size: 24px;
-        padding-left: 30px;
-    }
+.comment-title {
+    background-color: #eee;
+    font-size: 24px;
+    padding-left: 30px;
+}
 </style>
