@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "@/components/Home.vue"
-import Login from '@/components/sub/Login.vue'
-import Register from '@/components/sub/Register.vue'
-import About from '@/components/About.vue'
-import UserInfo from '@/components/UserInfo.vue'
-import Detail from '@/components/Detail.vue'
-import HotList from '@/components/HotList.vue'
-import Search from '@/components/Search.vue'
-import SongListDetail from '@/components/SongListDetail.vue'
+import Home from "@/pages/Home.vue"
+import Login from '@/pages/Login.vue'
+import Register from '@/pages/Register.vue'
+// import About from '@/pages/About.vue'
+import UserInfo from '@/pages/UserInfo.vue'
+import Detail from '@/pages/Detail.vue'
+import HotList from '@/pages/HotList.vue'
+import Search from '@/pages/Search.vue'
+import SongListDetail from '@/pages/SongListDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -35,11 +35,11 @@ const router = new VueRouter({
             name: 'register',
             component: Register
         },
-        {
-            path: '/about',
-            name: 'about',
-            component: About
-        },
+        // {
+        //     path: '/about',
+        //     name: 'about',
+        //     component: About
+        // },
         {
             path: '/userinfo',
             name: 'userinfo',
