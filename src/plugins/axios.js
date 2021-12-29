@@ -3,7 +3,7 @@ import qs from 'qs'
 
 axios.defaults.withCredentials = true// 允许跨域设置，不然可能因为拿不到cookie而报错
 
-axios.defaults.baseURL = 'http://localhost:3000/'   /*这里的地址就是刚刚启起来的服务器地址  */
+axios.defaults.baseURL = 'http://1.14.132.215:4000/'   /*这里的地址就是刚刚启起来的服务器地址  */
 
 /*请求拦截*/
 axios.interceptors.request.use(
