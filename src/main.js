@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import './plugins/axios'
+import 'amfe-flexible'  // 划分为1/10的宽度
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from './router'

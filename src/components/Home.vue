@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class='home'>
         <toptab></toptab>
         <div v-if="isLoading">
             <van-skeleton :row="8" />
@@ -138,96 +138,113 @@ export default {
 };
 </script>
 
-<style>
-.music-column {
-    border-left: 8px solid #1989fa;
-    padding-left: 20px;
-    padding: 30px;
-    border-top: 1px solid #eee;
+<style lang='scss' scoped>
+.home{
+    .banner{
+        .van-swipe {
+            text-align: center;
+            .banner-img {
+                width: 100%;
+                height: 300px;
+            }
+        }
+    }
+    .music-column {
+        border-left: 8px solid #1989fa;
+        padding-left: 20px;
+        padding: 30px;
+        border-top: 1px solid #eee;
+        font-size: 40px;
+        font-weight: bold;
+    }
+    .songlist {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .songlist-item{
+            flex: 33.3%;
+            p {
+                font-size: 14px;
+                padding-left: 4px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                /* 最多两行，超出隐藏*/
+                overflow: hidden;
+            }
+            .songlist-item-img{
+                position: relative;
+                img{
+                    width: 100%;
+                }
+                span {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    font-size: 12px;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .new-songs{
+        width: 100%;
+        .new-song-item {
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            margin-top: 20px;
+            .left-song {
+                /* font-size: 16px; */
+                padding-left: 30px;
+                .song-name{
+                    font-size: 30px;
+                }
+                .author {
+                    font-size: 12px;
+                    color: #a2a2a2;
+                    margin: 4px 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    .SQ{
+                        display: inline-block;
+                        background-image: url(../assets/index_icon_2x.png);
+                        width: 50px;
+                        height: 34px;
+                        background-position: 0 0;
+                        transform: scale(0.6);
+                        vertical-align: middle;
+                        margin-right: -10px;
+                    }
+                }
+            }
+            .play-icon {
+                line-height: 70px;
+                width: 100px;
+                height: 100px;
+                i {
+                    width: 100%;
+                    height: 100%;
+                    font-size: 60px;
+                    line-height: 80px;
+                }
+            }
+        }
+    }
 }
+</style>
 
-.songlist {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.songlist-item {
-    flex: 1 0 33.33%;
-    position: relative;
-}
-
-.songlist-item-img img {
-    width: 100%;
-}
-
-.songlist-item-img span {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 12px;
-    color: #fff;
-}
-
-.songlist-item p {
-    font-size: 14px;
-    padding-left: 4px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    /* 最多两行，超出隐藏*/
-    overflow: hidden;
-}
-
-.new-song-item {
-    height: 100px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
-    margin-top: 20px;
-}
-
-.left-song {
-    /* font-size: 16px; */
-    padding-left: 30px;
-}
-
-.author {
-    font-size: 12px;
-    color: #a2a2a2;
-    margin: 4px 0;
-}
-
-.play-icon {
-    line-height: 70px;
-    width: 100px;
-    height: 100px;
-}
-
-.play-icon i {
-    width: 100%;
-    height: 100%;
-    font-size: 60px;
-    line-height: 80px;
-}
-
-.SQ {
-    display: inline-block;
-    background-image: url(../assets/index_icon_2x.png);
-    width: 50px;
-    height: 34px;
-    background-position: 0 0;
-    transform: scale(0.6);
-    vertical-align: middle;
-    margin-right: -10px;
-}
-
-.van-swipe {
-    text-align: center;
-}
-
-.banner-img {
-    width: 100%;
-    height: 300px;
-}
+<style lang='scss'>
+    .van-tabs__wrap{
+        .van-tabs__nav{
+            .van-tab{
+                span{
+                    font-size: 30px;
+                }
+            }
+        }
+    }
 </style>
