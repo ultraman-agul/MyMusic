@@ -3,7 +3,7 @@
         <toptab></toptab>
         <div class="pic-div">
             <div class='hotsong'></div>
-            <p>更新日期：6月29日</p>
+            <p>更新日期：{{this.updateDate}}</p>
         </div>
         <song-list :songList='songList'></song-list>
     </div>
@@ -12,6 +12,7 @@
 import axios from 'axios'
 import toptab from "@/components/TopTab.vue";
 import SongList from '../components/SongList.vue'
+import moment from 'moment'
 export default {
     name: "hotlist",
     components: { toptab, SongList },
@@ -36,6 +37,7 @@ export default {
     },
     mounted(){
         this.getSongListInfo()
+        this.updateDate = moment().format("MM月DD日")
     }
 };
 </script>

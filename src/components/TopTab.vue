@@ -10,7 +10,7 @@
             >
             <!-- <van-icon name="user-circle-o" /> -->
         </div>
-        <van-tabs v-model:active="active" @click="changeTab">
+        <van-tabs v-model="active" @click="changeTab">
             <van-tab
                 :title="item"
                 v-for="(item, index) in tabList"
