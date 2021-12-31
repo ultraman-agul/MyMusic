@@ -26,38 +26,18 @@
         </div>
         <div class='part-title'>歌曲列表</div>
         <song-list :songList="songList"></song-list>
-        <!-- 歌曲评论 -->
-        <div class="comments">
-            <div class="part-title">最新评论({{this.commentList.length}})</div>
-            <div class="comment" v-for='(item,index) in commentList' :key='index'>
-                <div class="comment-userinfo">
-                    <div class='left-user'>
-                        <img :src="item.user.avatarUrl" alt="">
-                        <div>
-                            <p>{{item.user.nickname}} <img src="../assets/vip4.png" alt=""></p>
-                            <p>{{item.time | formatDate}}</p>
-                        </div>
-                    </div>
-                    <div class="good">
-                        {{item.likedCount}}
-                        <van-icon name="good-job-o" size="16" />
-                    </div>
-                </div>
-                <div class="comment-content">
-                    <p>{{item.content}}</p>
-                </div>
-            </div>
-        </div>
+        <comment :commentList="commentList"></comment>
     </div>
 </template>
 <script>
 import axios from "axios";
 import headnav from "@/components/HeadNav.vue";
 import SongList from '../components/SongList.vue'
+import Comment from '../components/Comments.vue'
 
 export default {
     name: "SongListDetail",
-    components: { headnav, SongList },
+    components: { headnav, SongList, Comment },
     data() {
         return {
             songList: [],
@@ -84,13 +64,15 @@ export default {
                     );
                 });
         },
-        handleToComments() {
-            axios.get("/comment/playlist?id=" + this.songListId).then((res) => {
-                if (res.data.code === 200) {
-                    this.commentList = res.data.comments;
-                }
-                console.log(res);
-            });
+        getComments() {
+            axios
+                .get("/comment/playlist?id=" + this.songListId)
+                .then((res) => {
+                    if (res.data.code === 200) {
+                        this.commentList = res.data.comments;
+                    }
+                    console.log(res);
+                });
         },
     },
     mounted() {
@@ -99,8 +81,8 @@ export default {
         if(id){
             this.songListId = id
         }
-        this.getSongListInfo();
-        this.handleToComments();
+        this.getSongListInfo()
+        this.getComments()
     },
 };
 </script>
@@ -141,6 +123,9 @@ export default {
         }
     }
     .song-detail-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
         .detail-list-title {
             width: 400px;
         }
@@ -168,6 +153,7 @@ export default {
 .part-title {
     background-color: #eee;
     font-size: 40px;
+    padding: 20px 0;
     padding-left: 30px;
 }
 

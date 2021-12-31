@@ -103,33 +103,7 @@
                 </div>
             </div>
             <h4>精彩评论</h4>
-            <div class="comments">
-                <div
-                    class="comment"
-                    v-for="(item, index) in hotComments"
-                    :key="index"
-                >
-                    <div class="comment-userinfo">
-                        <div class="left-user">
-                            <img :src="item.user.avatarUrl" alt="" />
-                            <div>
-                                <p>
-                                    {{ item.user.nickname }}
-                                    <img src="../assets/vip4.png" alt="" />
-                                </p>
-                                <p>{{ item.time | formatDate }}</p>
-                            </div>
-                        </div>
-                        <div class="good">
-                            {{ item.likedCount }}
-                            <van-icon name="good-job-o" size="16" />
-                        </div>
-                    </div>
-                    <div class="comment-content">
-                        <p>{{ item.content }}</p>
-                    </div>
-                </div>
-            </div>
+           <comment :commentList='hotComments'></comment>
             <van-button round type="info" @click="print" class="more"
                 >打开酷网Q查看更多</van-button
             >
@@ -139,9 +113,10 @@
 <script>
 import axios from "axios";
 import headnav from "@/components/HeadNav.vue";
+import comment from '@/components/Comments.vue'
 export default {
     name: "detail",
-    components: { headnav },
+    components: { headnav, comment },
     data() {
         return {
             songId: this.$route.query.id,
@@ -523,59 +498,6 @@ export default {
     white-space: nowrap;
 }
 
-.comment {
-    margin-top: 20px;
-}
-
-.comment-userinfo {
-    display: flex;
-    justify-content: space-between;
-}
-
-.left-user > img {
-    float: left;
-    height: 70px;
-    width: 70px;
-    border-radius: 50%;
-    margin-right: 20px;
-}
-
-.left-user div {
-    float: left;
-}
-
-.left-user div p {
-    margin: 0;
-}
-
-.left-user div p img {
-    height: 30px;
-    width: 60px;
-}
-
-.left-user div p:nth-child(2),
-.good {
-    color: #999;
-    font-size: 25px;
-}
-
-.good {
-    line-height: 70px;
-}
-
-.comment-content {
-    margin-left: 70px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    /* 最多两行，超出隐藏*/
-    overflow: hidden;
-    border-bottom: 2px solid #eee;
-}
-
-.comment-content p {
-    margin: 14px 0;
-}
 
 .more {
     width: 100%;
