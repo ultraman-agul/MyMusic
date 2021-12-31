@@ -1,7 +1,7 @@
 <template>
     <!-- 歌曲评论 -->
     <div class="comments">
-        <div class="part-title">最新评论({{this.commentList.length}})</div>
+        <div class="part-title" v-if='$route.name!="detail"'>最新评论({{this.commentList.length}})</div>
         <div class="comment" v-for='(item,index) in commentList' :key='index'>
             <div class="comment-userinfo">
                 <div class='left-user'>

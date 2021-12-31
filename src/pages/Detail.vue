@@ -55,7 +55,11 @@
             </div>
             <div class="song-this"></div>
             <div>
-                <van-progress :percentage="percentage" class="progress" />
+                <div class='play-progress'>
+                    <span>{{showCurrentTime}}</span>
+                    <van-progress class="progress" :percentage='percentage' pivot-text=''/>
+                    <span>{{showTotalTime}}</span>
+                </div>
                 <div class="play-control">
                     <van-icon name="arrow-left" @click="preSong" />
                     <van-icon
@@ -114,6 +118,7 @@
 import axios from "axios";
 import headnav from "@/components/HeadNav.vue";
 import comment from '@/components/Comments.vue'
+import { min } from 'moment';
 export default {
     name: "detail",
     components: { headnav, comment },
@@ -135,6 +140,8 @@ export default {
             marginTop: 0,
             audio: new Audio(),
             percentage: 0,
+            totalTime: 0,
+            currentTime: 0,
         };
     },
     methods: {
@@ -256,9 +263,9 @@ export default {
             }, 600);
         },
         updateTime() {
-            let totalTime = this.audio.duration;
-            let currentTime = parseInt(this.audio.currentTime);
-            this.percentage = ((currentTime / totalTime) * 100).toFixed(2);
+            this.totalTime = this.audio.duration;
+            this.currentTime = parseInt(this.audio.currentTime);
+            this.percentage = ((this.currentTime / this.totalTime) * 100).toFixed(2);
         },
         startPlay() {
             this.playFlag = true;
@@ -266,7 +273,7 @@ export default {
             this.startLyric();
         },
     },
-    created() {
+    mounted() {
         this.getMusic(this.songId);
         // 开启自动播放
         this.audio.addEventListener("canplay", () => {
@@ -277,6 +284,18 @@ export default {
             this.nextSong();
         });
     },
+    computed: {
+        showCurrentTime(){
+            const minutes = Math.floor(this.currentTime / 60)
+            const seconds = Math.floor(this.currentTime % 60)
+            return `${minutes <= 9 ? '0' + minutes : minutes}:${seconds <=9 ? '0' + seconds : seconds}`
+        },
+        showTotalTime(){
+            const minutes = Math.floor(this.totalTime / 60)
+            const seconds = Math.floor(this.totalTime % 60)
+            return `${minutes <= 9 ? '0' + minutes : minutes}:${seconds <=9 ? '0' + seconds : seconds}`
+        }
+    },
     destroyed() {
         clearInterval(this.timer);
         this.audio.pause();
@@ -284,7 +303,7 @@ export default {
     },
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .most {
     position: fixed;
     width: 80%;
@@ -306,39 +325,30 @@ export default {
     border-bottom: 1px solid #eee;
     color: #fff;
     align-items: center;
+    .left-ask {
+        line-height: 70px;
+        img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+    }
+    .title-name {
+        width: 100%;
+        text-align: center;
+        p:nth-child(1) {
+            font-size: 30px;
+        }
+        p:nth-child(2) {
+            font-size: 22px;
+        }
+    }
+    .right-app {
+        width: 60px;
+    }
 }
 
-.title-name {
-    width: 100%;
-    text-align: center;
-}
-
-.title-name p {
-    margin: 0;
-}
-
-.title-name p:nth-child(1) {
-    font-size: 30px;
-}
-
-.title-name p:nth-child(2) {
-    font-size: 22px;
-}
-
-.left-ask {
-    line-height: 70px;
-}
-
-.left-ask img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    vertical-align: middle;
-}
-
-.right-app {
-    width: 60px;
-}
 
 .bottom {
     background: url(../assets/d7e4e3a244701ee85fecb5d4f6b5bd57.png) no-repeat
@@ -360,12 +370,25 @@ export default {
     border-radius: 50%;
     overflow: hidden;
     position: relative;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    .playbtn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        z-index: 2;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
 
-.center img {
-    width: 100%;
-    height: 100%;
-}
 
 .tantou {
     background: url(../assets/needle-ab.png) no-repeat center center;
@@ -380,20 +403,6 @@ export default {
     left: 220px;
 }
 
-.playbtn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    z-index: 2;
-}
-
-.playbtn img {
-    width: 100%;
-    height: 100%;
-}
 
 .lyric {
     margin-top: 20px;
@@ -402,19 +411,16 @@ export default {
     height: 300px;
     overflow: hidden;
     font-size: 32px;
-}
-
-.lyric p {
-    margin: 14px 0;
-}
-
-.lyric-wrap {
-    height: 2000px;
-}
-
-.activelyric {
-    color: #fff;
-    font-size: 40px;
+    p {
+        margin: 14px 0;
+    }
+    .lyric-wrap {
+        height: 2000px;
+    }
+    .activelyric {
+        color: #fff;
+        font-size: 40px;
+    }
 }
 
 .song-this {
@@ -427,29 +433,41 @@ export default {
     border: 1px solid #eee;
 }
 
+.play-progress{
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    padding: 10px;
+    span{
+        margin: 10px;
+    }
+    .van-progress{
+        width: 100%;
+    }
+}
+
 .app-btn {
     display: flex;
     justify-content: space-around;
     margin-top: 100px;
-}
+    div {
+        width: 35%;
+        height: 50px;
+        border-radius: 45px;
+        padding: 20px;
+        line-height: 50px;
+        font-size: 40px;
+        border: 1px solid #1989fa;
+        text-align: center; 
+    }
+    .open-app {
+        color: #1989fa;
+    }
 
-.app-btn div {
-    width: 35%;
-    height: 50px;
-    border-radius: 45px;
-    padding: 20px;
-    /* color: #fff; */
-    border: 1px solid #1989fa;
-    text-align: center;
-}
-
-.open-app {
-    color: #1989fa;
-}
-
-.download {
-    background-color: #1989fa;
-    color: #fff;
+    .download {
+        background-color: #1989fa;
+        color: #fff;
+    }
 }
 
 .bottom-container {
@@ -458,46 +476,36 @@ export default {
     padding: 40px;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
+    .like-song {
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 28px;
+        margin: 20px 0;
+        .song-info {
+            width: 70%;
+            overflow: hidden;
+            .song-info p:nth-child(2) {
+                color: #999;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        div {
+            height: 80px;
+        }
+        .pic {
+            margin-right: 20px;
+            img {
+                height: 80px;
+                overflow: hidden;
+            }
+        }
+    }
 }
-
-.like-song {
-    height: 80px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 28px;
-    margin: 20px 0;
-}
-
-.song-info {
-    width: 70%;
-    overflow: hidden;
-}
-
-.like-song div {
-    height: 80px;
-}
-
-.pic {
-    margin-right: 20px;
-}
-
-.pic img {
-    height: 80px;
-    overflow: hidden;
-}
-
-.song-info p {
-    margin: 0;
-}
-
-.song-info p:nth-child(2) {
-    color: #999;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
+ 
 
 .more {
     width: 100%;
@@ -527,20 +535,20 @@ export default {
     justify-content: space-around;
     margin: 30px auto;
     align-items: center;
+    i {
+        display: block;
+        width: 70px;
+        height: 70px;
+        text-align: center;
+        line-height: 70px;
+        border: 1px solid #999;
+        font-size: 40px;
+        border-radius: 50%;
+    }
 }
 
 .progress {
     margin-top: 20px;
 }
 
-.play-control i {
-    display: block;
-    width: 70px;
-    height: 70px;
-    text-align: center;
-    line-height: 70px;
-    border: 1px solid #999;
-    font-size: 40px;
-    border-radius: 50%;
-}
 </style>
