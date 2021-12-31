@@ -166,17 +166,17 @@ export default {
             this.$store.commit("NEXT_ID", id);
             //歌曲详情
             await axios.get("/song/detail?ids=" + id).then((res) => {
-                if (res.data.code === 200) {
+                if (res.code === 200) {
                     // console.log(res)
-                    this.songsInfo = res.data.songs[0];
+                    this.songsInfo = res.songs[0];
                 }
             });
 
             //相关歌曲
             await axios.get("/simi/song?id=" + id).then((res) => {
-                if (res.data.code === 200) {
+                if (res.code === 200) {
                     // console.log(res)
-                    this.sameSong = res.data.songs;
+                    this.sameSong = res.songs;
                 }
             });
 
@@ -184,20 +184,20 @@ export default {
             await axios
                 .get("/comment/music?id=" + id + "&limit=" + 1)
                 .then((res) => {
-                    if (res.data.code === 200) {
-                        this.hotComments = res.data.hotComments;
+                    if (res.code === 200) {
+                        this.hotComments = res.hotComments;
                         // console.log(this.hotComments)
                     }
                 });
 
             // 歌词
             await axios.get("/lyric?id=" + id).then((res) => {
-                if (res.data.code === 200) {
-                    console.log(res.data);
-                    if (res.data.nolyric) {
+                if (res.code === 200) {
+                    console.log(res);
+                    if (res.nolyric) {
                         return;
                     }
-                    res.data.lrc.lyric.replace(
+                    res.lrc.lyric.replace(
                         /\[([^\]]+)\]([^\[]+)/g,
                         (match, p1, p2) => {
                             let arr;
@@ -216,9 +216,9 @@ export default {
 
             // 歌曲资源链接
             await axios.get("/song/url?id=" + id).then((res) => {
-                if (res.data.code === 200) {
-                    // console.log(res.data);
-                    if (res.data.data[0].url === null) {
+                if (res.code === 200) {
+                    // console.log(res);
+                    if (res.data[0].url === null) {
                         this.$toast.fail({
                             forbidClick: true,
                             message: "暂无歌曲资源",
@@ -226,7 +226,7 @@ export default {
                         this.$router.go(-1);
                         return;
                     }
-                    this.songUrl = res.data.data[0].url;
+                    this.songUrl = res.data[0].url;
                     this.audio.src = this.songUrl;
                 }
             });

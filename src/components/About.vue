@@ -16,7 +16,7 @@ export default {
                 method: "post",
             })
                 .then((res) => {
-                    console.log(res.data.tags);
+                    console.log(res.tags);
                 })
                 .catch((err) => {
                     console.log(err);

@@ -56,11 +56,11 @@ export default {
                 .get("/playlist/detail?id=" + this.songListId)
                 .then((res) => {
                     console.log(res);
-                    this.songList = res.data.playlist.tracks;
-                    this.songListInfo = res.data.playlist;
+                    this.songList = res.playlist.tracks;
+                    this.songListInfo = res.playlist;
                     this.$store.commit(
                         "INIT_TOPLISTIDS",
-                        res.data.playlist.tracks
+                        res.playlist.tracks
                     );
                 });
         },
@@ -68,8 +68,8 @@ export default {
             axios
                 .get("/comment/playlist?id=" + this.songListId)
                 .then((res) => {
-                    if (res.data.code === 200) {
-                        this.commentList = res.data.comments;
+                    if (res.code === 200) {
+                        this.commentList = res.comments;
                     }
                     console.log(res);
                 });

@@ -23,7 +23,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   res => {
     /*可在这里根据返回的状态码做一些拦截操作*/
-    return res
+    return res.data
   }, err => {
     return Promise.resolve(err)
   }

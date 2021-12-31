@@ -108,22 +108,22 @@ export default {
         getBanner() {
             axios.get("/banner?type=1").then((res) => {
                 console.log(res);
-                this.banners = res.data.banners;
+                this.banners = res.banners;
             });
         },
         // 主编推荐歌单
         getRecommendSongList() {
             axios.get("/personalized?limit=6").then((res) => {
-                this.songList = res.data.result;
+                this.songList = res.result;
                 // console.log(this.songList)
             });
         },
         // 最新音乐
         getNewSongs() {
             axios.get("/personalized/newsong").then((res) => {
-                this.newSongList = res.data.result;
-                console.log(res.data.result);
-                this.$store.commit("INIT_TOPLISTIDS", res.data.result);
+                this.newSongList = res.result;
+                console.log(res.result);
+                this.$store.commit("INIT_TOPLISTIDS", res.result);
             });
         },
     },

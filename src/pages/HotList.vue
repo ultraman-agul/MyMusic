@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import toptab from "@/components/TopTab.vue";
 import SongList from '../components/SongList.vue'
 export default {
@@ -22,17 +23,19 @@ export default {
     methods: {
           getSongListInfo() {
             axios
-                .get("/playlist/detail?id=" + this.songListId)
+                .get("/playlist/detail?id=5001")
                 .then((res) => {
                     console.log(res);
-                    this.songList = res.data.playlist.tracks;
-                    // this.songListInfo = res.data.playlist;
+                    this.songList = res.playlist.tracks;
                     this.$store.commit(
                         "INIT_TOPLISTIDS",
-                        res.data.playlist.tracks
+                        res.playlist.tracks
                     );
                 });
         },
+    },
+    mounted(){
+        this.getSongListInfo()
     }
 };
 </script>

@@ -69,9 +69,9 @@ export default {
     created() {
         axios.get("/login/status").then((res) => {
             console.log(res);
-            if (res.data.data.account) {
+            if (res.data.account) {
                 this.onLine = true;
-                this.userId = res.data.data.account.id;
+                this.userId = res.data.account.id;
             } else {
                 this.onLine = false;
             }

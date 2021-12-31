@@ -53,11 +53,11 @@ export default {
                 )
                 .then((res) => {
                     console.log(res);
-                    if (res.data.code === 200) {
+                    if (res.code === 200) {
                         this.$toast.success("登陆成功");
                         this.$router.push({ name: "home" });
                     } else {
-                        this.$toast.fail(res.data.message);
+                        this.$toast.fail(res.message);
                     }
                 });
         },

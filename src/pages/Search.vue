@@ -31,16 +31,14 @@
                     <div
                         class="history-item"
                         v-for="(item, index) in searchHistory"
-                        :key="index"
-                    >
+                        :key="index">
                         <van-icon name="clock-o" class="clock" />
-                        <div>
-                            <div @click="handleToSelect(item)">{{ item }}</div>
-                            <van-icon
-                                name="cross"
-                                @click="handleToDeleteHistory(index)"
-                            />
+                        <div class='left-name' @click="handleToSelect(item)">
+                            {{ item }}
                         </div>
+                        <van-icon
+                            name="cross"
+                            @click="handleToDeleteHistory(index)"/>
                     </div>
                 </div>
             </div>
@@ -48,35 +46,7 @@
         <!-- 搜索结果部分 -->
         <div v-if="searchStep == 2">
             <div class="search-tips">已显示“{{ searchValue }}”的搜索结果</div>
-            <div class="song-lists">
-                <div
-                    class="song-list-item"
-                    v-for="(item, index) in this.songList"
-                    :key="index"
-                    @click="handleToDetail(item.id)"
-                >
-                    <div>
-                        <div class="idx">
-                            {{ index + 1 < 10 ? "0" + (index + 1) : index + 1 }}
-                        </div>
-                        <div class="song-info">
-                            <p>{{ item.name }}</p>
-                            <p>
-                                <span
-                                    v-for="(item, index) in item.artists"
-                                    :key="index"
-                                >
-                                    {{ item.name + " " }}
-                                </span>
-                                <span>{{ " - " + item.album.name }}</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="play-icon">
-                        <van-icon name="play-circle-o" />
-                    </div>
-                </div>
-            </div>
+            <song-list :songList='songList'></song-list>
         </div>
         <!-- 搜索提示部分 -->
         <div v-if="searchStep == 3">
@@ -87,10 +57,8 @@
                     :key="index"
                 >
                     <van-icon name="search" class="clock" />
-                    <div>
-                        <div @click="handleToSelect(item.keyword)">
-                            {{ item.keyword }}
-                        </div>
+                    <div @click="handleToSelect(item.keyword)" class='left-name'>
+                        {{ item.keyword }}
                     </div>
                 </div>
             </div>
@@ -100,6 +68,7 @@
 <script>
 import toptab from "@/components/TopTab.vue";
 import axios from "axios";
+import SongList from '@/components/SongList.vue'
 export default {
     name: "search",
     data() {
@@ -113,13 +82,13 @@ export default {
             keyWord: [],
         };
     },
-    components: { toptab },
+    components: { toptab, SongList },
     methods: {
         // 获取搜索热词
         getHotSearch() {
             axios.get("/search/hot").then((res) => {
-                if (res.data.code === 200) {
-                    this.hotSearchList = res.data.result.hots;
+                if (res.code === 200) {
+                    this.hotSearchList = res.result.hots;
                 }
             });
         },
@@ -138,10 +107,10 @@ export default {
             );
 
             axios.get("/search?keywords= " + this.searchValue).then((res) => {
-                if (res.data.code === 200) {
-                    this.songList = res.data.result.songs;
+                console.log(res)
+                if (res.code === 200) {
+                    this.songList = res.result.songs;
                 }
-                // console.log(res)
             });
             // this.searchValue = ''
             this.searchStep = 2;
@@ -178,18 +147,15 @@ export default {
         upadteValue() {
             // console.log(1)
             axios
-                .get(
-                    "/search/suggest?keywords= " +
-                        this.searchValue +
-                        "&type=mobile"
-                )
+                .get(`/search/suggest?keywords=${this.searchValue}&type=mobile`)
                 .then((res) => {
-                    // console.log(res)
-                    this.keyWord = res.data.result.allMatch;
+                    if(res.code === 200){
+                        this.keyWord = res.result.allMatch;
+                    }
                 });
         },
     },
-    created() {
+    mounted() {
         this.getHotSearch();
         // 获取搜索历史
         if (localStorage.getItem("historySearch")) {
@@ -200,122 +166,50 @@ export default {
     },
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .search-box {
     border-bottom: 2px solid #ddd;
 }
 
 .hot-search {
     padding: 30px 20px;
+    .hot-search-title {
+        font-size: 26px;
+    }
+    .hot-search-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 20px;
+        .van-button {
+            height: 70px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+    }
+   
 }
-
-.hot-search-title {
-    font-size: 26px;
+ .search-history {
+    // margin-top: 40px;
+    padding: 20px;
+    .history-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 50px;
+        line-height: 50px;
+        padding: 20px 0;
+        font-size: 36px;
+        .left-name {
+            font-size: 26px;
+            margin-left: 20px;
+            width: 100%;
+            border-bottom: 2px solid #ddd;
+        }
+    }
 }
-
-.hot-search-content {
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 20px;
-}
-
-.hot-search-content button {
-    margin-right: 20px;
-    margin-bottom: 20px;
-}
-
-.hot-search-content .van-button {
-    height: 70px;
-}
-
-.history-item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.search-history {
-    margin-top: 40px;
-}
-
-.clock {
-    left: 10px;
-    position: relative;
-    top: -20px;
-}
-
-.history-item > div {
-    margin-left: 40px;
-    width: 86%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-}
-
 .search-tips {
     padding: 40px;
+    font-size: 30px;
 }
 
-/* 歌曲部分 */
-.pic-div p {
-    margin: 0;
-    color: #fff;
-    font-size: 20px;
-}
-
-.play-icon {
-    line-height: 70px;
-    width: 100px;
-    height: 100px;
-}
-
-.play-icon i {
-    width: 100%;
-    height: 100%;
-    font-size: 60px;
-}
-
-.song-list-item {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.idx,
-.song-info {
-    float: left;
-}
-
-.idx {
-    margin: 0 20px;
-    width: 50px;
-    line-height: 100px;
-    color: #1989fa;
-}
-
-.song-info {
-    width: 550px;
-    line-height: 100px;
-    padding: 10px 0;
-}
-
-.song-list-item:nth-child(-n + 3) .idx {
-    color: #f01414;
-}
-
-.song-info p {
-    line-height: 40px;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.song-info p:nth-child(2) {
-    font-size: 22px;
-    color: #999;
-}
 </style>

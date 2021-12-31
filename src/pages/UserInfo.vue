@@ -185,21 +185,21 @@ export default {
             //  个人信息
             axios.get("/user/detail?uid=" + this.userId).then((res) => {
                 console.log(res);
-                (this.userInfo = res.data),
-                    (this.userProfile = res.data.profile);
+                (this.userInfo = res),
+                    (this.userProfile = res.profile);
             });
             // 个人歌单
             axios.get("/user/playlist?uid=" + this.userId).then((res) => {
-                if (res.data.code === 200) {
+                if (res.code === 200) {
                     // 区分个人歌单和收藏歌单
-                    res.data.playlist.forEach((item, index) => {
+                    res.playlist.forEach((item, index) => {
                         if (item.creator.userId == this.userId) {
                             this.mySongList.push(item);
                         } else {
                             this.collectSongList.push(item);
                         }
                     });
-                    // this.mySongList = res.data.playlist
+                    // this.mySongList = res.playlist
                 }
                 console.log(res);
                 console.log(this.mySongList);
@@ -217,7 +217,7 @@ export default {
         },
         handleToLogout() {
             axios.get("/logout").then((res) => {
-                if (res.data.code === 200) {
+                if (res.code === 200) {
                     this.$router.push({
                         name: "home",
                     });

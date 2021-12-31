@@ -7,10 +7,17 @@
             <div class='song-info'>
                 <p>{{item.name}}</p>
                 <p>
-                    <span v-for='(item,index) in item.ar' :key="index">
-                        {{item.name+" "}}
+                    <span v-if='item.ar'>
+                        <span v-for='(item,index) in item.ar' :key="index">
+                            {{item.name+" "}}
+                        </span>
                     </span>
-                    <span>{{" - "+ item.al.name}}</span>
+                    <span v-else>
+                        <span v-for='(item,index) in item.artists' :key="index">
+                            {{item.name+" "}}
+                        </span>
+                    </span>
+                   
                 </p>
             </div>
             <div class="play-icon">

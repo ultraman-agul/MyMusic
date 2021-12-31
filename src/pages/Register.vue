@@ -83,8 +83,8 @@ export default {
                 .get("/cellphone/existence/check?phone=" + this.cellphone)
                 .then((res) => {
                     console.log(res);
-                    if (res.data.code === 200) {
-                        if (res.data.exist === 1) {
+                    if (res.code === 200) {
+                        if (res.exist === 1) {
                             this.$toast.fail("用户已注册,请返回登陆");
                             return 1;
                         }
