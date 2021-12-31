@@ -39,6 +39,7 @@ export default {
 
 .title {
     width: 100%;
+    font-size: 30px;
     text-align: center;
     color: #fff;
     font-weight: bold;

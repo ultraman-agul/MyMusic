@@ -5,56 +5,35 @@
             <div class='hotsong'></div>
             <p>更新日期：6月29日</p>
         </div>
-        <div class="song-lists">
-            <div class="song-list-item" v-for="(item,index) in this.songList" :key='index' @click='handleToDetail(item.id)'>
-                <div>
-                    <div class="idx">
-                        {{(index+1) < 10 ? '0' +(index+1) : (index+1)}} </div>
-                            <div class='song-info'>
-                                <p>{{item.name}}</p>
-                                <p>
-                                    <span v-for='(item,index) in item.ar' :key="index">
-                                        {{item.name+" "}}
-                                    </span>
-                                    <span>{{" - "+ item.al.name}}</span>
-                                </p>
-                            </div>
-                    </div>
-                    <div class="play-icon">
-                        <van-icon name="play-circle-o" />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <song-list :songList='songList'></song-list>
     </div>
 </template>
 <script>
 import toptab from "@/components/TopTab.vue";
-import axios from "axios";
+import SongList from '../components/SongList.vue'
 export default {
     name: "hotlist",
-    components: { toptab },
-    data() {
+    components: { toptab, SongList },
+    data(){
         return {
-            songList: [],
-        };
+            songList: []
+        }
     },
     methods: {
-        handleToDetail(id) {
-            this.$router.push({
-                name: "detail",
-                query: { id: id },
-            });
+          getSongListInfo() {
+            axios
+                .get("/playlist/detail?id=" + this.songListId)
+                .then((res) => {
+                    console.log(res);
+                    this.songList = res.data.playlist.tracks;
+                    // this.songListInfo = res.data.playlist;
+                    this.$store.commit(
+                        "INIT_TOPLISTIDS",
+                        res.data.playlist.tracks
+                    );
+                });
         },
-    },
-    created() {
-        axios.get("/playlist/detail?id=5001").then((res) => {
-            if (res.data.code === 200) {
-                this.songList = res.data.playlist.tracks;
-                console.log(this.songList);
-            }
-        });
-    },
+    }
 };
 </script>
 <style>
@@ -84,57 +63,5 @@ export default {
     font-size: 20px;
 }
 
-.play-icon {
-    line-height: 70px;
-    width: 100px;
-    height: 100px;
-}
 
-.play-icon i {
-    width: 100%;
-    height: 100%;
-    font-size: 80px;
-}
-
-.song-list-item {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    border-bottom: 2px solid #ddd;
-}
-
-.idx,
-.song-info {
-    float: left;
-}
-
-.idx {
-    margin: 0 20px;
-    width: 50px;
-    line-height: 100px;
-    color: #1989fa;
-}
-
-.song-info {
-    width: 550px;
-    line-height: 100px;
-    padding: 10px 0;
-}
-
-.song-list-item:nth-child(-n + 3) .idx {
-    color: #f01414;
-}
-
-.song-info p {
-    line-height: 40px;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.song-info p:nth-child(2) {
-    font-size: 22px;
-    color: #999;
-}
 </style>

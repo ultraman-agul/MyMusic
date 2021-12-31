@@ -187,7 +187,12 @@ export default {
             }
         }
     }
-    .new-songs{
+   
+}
+</style>
+
+<style lang='scss'>
+     .new-songs{
         width: 100%;
         .new-song-item {
             height: 100px;
@@ -234,10 +239,7 @@ export default {
             }
         }
     }
-}
-</style>
 
-<style lang='scss'>
     .van-tabs__wrap{
         .van-tabs__nav{
             .van-tab{
