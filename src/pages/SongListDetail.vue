@@ -11,7 +11,7 @@
                 <img :src="this.songListInfo.coverImgUrl" alt="">
             </div>
             <div class='song-detail-info'>
-                <div class="detail-list-title">
+                <div class="title">
                     {{this.songListInfo.name}}
                 </div>
                 <p><img :src="this.songListInfo.creator.avatarUrl" alt=""><span>
@@ -24,11 +24,11 @@
                 </p>
             </div>
         </div>
-        <div class='song-list-title'>歌曲列表</div>
+        <div class='part-title'>歌曲列表</div>
         <song-list :songList="songList"></song-list>
         <!-- 歌曲评论 -->
         <div class="comments">
-            <div class="comment-title">最新评论({{this.commentList.length}})</div>
+            <div class="part-title">最新评论({{this.commentList.length}})</div>
             <div class="comment" v-for='(item,index) in commentList' :key='index'>
                 <div class="comment-userinfo">
                     <div class='left-user'>
@@ -104,81 +104,71 @@ export default {
     },
 };
 </script>
-<style>
+<style lang='scss' scoped>
 .cover {
     width: 100%;
     z-index: -1;
     position: absolute;
     height: 320px;
     overflow: hidden;
+    .cover-img {
+        height: 320px;
+        width: 100%;
+        background-size: 100% 400px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        z-index: -1;
+        filter: blur(30px);
+        transform: scale(1.2);
+        overflow: hidden;
+    }
 }
 
-.cover-img {
-    height: 320px;
-    width: 100%;
-    background-size: 100% 400px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    z-index: -1;
-    filter: blur(30px);
-    transform: scale(1.2);
-    overflow: hidden;
-}
-
-.song-details {
+.song-details{
     padding: 40px;
     color: #fff;
     display: flex;
     justify-content: space-around;
+    .song-detail-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-right: 30px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .song-detail-info {
+        .detail-list-title {
+            width: 400px;
+        }
+        p {
+            color: #ccc;
+            font-size: 30px;
+             img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                vertical-align: middle;
+            }
+            i {
+                vertical-align: middle;
+            }
+        }
+        .edits {
+            font-size: 24px;
+        }
+    }
+        
 }
 
-.song-detail-img {
-    width: 200px;
-    height: 200px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-right: 30px;
-}
 
-.song-detail-img img {
-    width: 100%;
-    height: 100%;
-}
-
-.detail-list-title {
-    width: 400px;
-}
-
-.song-detail-info p {
-    color: #ccc;
-}
-
-.song-detail-info p img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    vertical-align: middle;
-}
-
-.edits {
-    font-size: 24px;
-}
-
-.song-detail-info p i {
-    vertical-align: middle;
-}
-
-.song-list-title {
+.part-title {
     background-color: #eee;
-    font-size: 24px;
-    position: relative;
-    top: -12px;
+    font-size: 40px;
     padding-left: 30px;
 }
 
-.comment-title {
-    background-color: #eee;
-    font-size: 24px;
-    padding-left: 30px;
-}
 </style>
