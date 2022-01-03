@@ -18,7 +18,8 @@ export default {
     components: { toptab, SongList },
     data(){
         return {
-            songList: []
+            songList: [],
+            updateDate: '',
         }
     },
     methods: {

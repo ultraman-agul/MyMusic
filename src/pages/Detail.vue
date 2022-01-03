@@ -63,12 +63,12 @@
                 <div class="play-control">
                     <van-icon name="arrow-left" @click="preSong" />
                     <van-icon
-                        v-if="playFlag"
+                        v-show="playFlag"
                         name="pause-circle-o"
                         @click="trogglePlay"
                     />
                     <van-icon
-                        v-else
+                        v-show="!playFlag"
                         name="play-circle-o"
                         @click="trogglePlay"
                     />
@@ -260,7 +260,7 @@ export default {
                     }
                 }
                 this.updateTime();
-            }, 600);
+            }, 100);
         },
         updateTime() {
             this.totalTime = this.audio.duration;
