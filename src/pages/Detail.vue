@@ -256,7 +256,7 @@ export default {
                         this.audio.currentTime < this.lyric[i + 1].time
                     ) {
                         this.currentIndex = i;
-                        this.marginTop = i * -27 + "px";
+                        this.marginTop = i * -23 + "px";
                     }
                 }
                 this.updateTime();
@@ -315,6 +315,15 @@ export default {
     transform: scale(1.5);
     z-index: -1;
     overflow: hidden;
+    &::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
 }
 
 .detail-head {
@@ -416,6 +425,7 @@ export default {
     }
     .lyric-wrap {
         height: 2000px;
+        transition: all 0.2s;
     }
     .activelyric {
         color: #fff;
@@ -440,6 +450,7 @@ export default {
     padding: 10px;
     span{
         margin: 10px;
+        color: #fff;
     }
     .van-progress{
         width: 100%;

@@ -89,11 +89,11 @@ export default {
 .comment-content {
     margin-left: 70px;
     font-size: 30px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    /* 最多两行，超出隐藏*/
-    overflow: hidden;
+    // display: -webkit-box;
+    // -webkit-box-orient: vertical;
+    // -webkit-line-clamp: 2;
+    // /* 最多两行，超出隐藏*/
+    // overflow: hidden;
     border-bottom: 2px solid #eee;
     p {
         margin: 14px 0;

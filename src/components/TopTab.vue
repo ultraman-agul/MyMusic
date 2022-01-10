@@ -95,6 +95,7 @@ export default {
     line-height: 120px;
     font-weight: bold;
     letter-spacing: 2px;
+    font-size: 40px;
 }
 
 .music-header a {
